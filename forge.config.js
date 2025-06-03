@@ -10,8 +10,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        iconUrl: "",
-        setupIcon: "./src/assets/app.ico",
+        iconUrl: "https://raw.githubusercontent.com/CookieGMVN/JellyRPC/refs/heads/main/src/assets/icon.ico",
+        setupIcon: "./src/assets/icon.ico",
         authors: "CookieGMVN",
         description: "Sync your Jellyfin playing state with Discord.",
         name: "JellyRPC"
