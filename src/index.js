@@ -86,7 +86,7 @@ app.whenReady().then(async () => {
     } else {
       mainWindow.webContents.send("creds-set");
 
-      updatePresence(content.url, token, content.deviceId);
+      updatePresence(content.url, decryptedUsername, token, content.deviceId);
     }
   }
 
@@ -153,7 +153,10 @@ function traySetup() {
   });
 }
 
-function saveCreds(url, username, password) {
+async function saveCreds(url, username, password) {
+  const token = await getJellyfinToken(url, username, password);
+  if (!token) return mainWindow.webContents.send("creds-error");
+
   const filePath = path.join(app.getPath("userData"), "config.json");
 
   const content = {
@@ -165,8 +168,7 @@ function saveCreds(url, username, password) {
 
   fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf-8');
   mainWindow.webContents.send("creds-set");
-
-  updatePresence(url, content.username, content.deviceId);
+  updatePresence(url, content.username, token, content.deviceId);
 }
 
 function resetCreds() {
@@ -182,7 +184,7 @@ function resetCreds() {
   client.destroy();
 }
 
-async function updatePresence(url, token, deviceId) {
+async function updatePresence(url, username, token, deviceId) {
   client.login();
 
   client.on("error", (error) => {
@@ -197,7 +199,7 @@ async function updatePresence(url, token, deviceId) {
 
         if (!sessions || sessions.length <= 0) return client.user.clearActivity();
 
-        const playingSessions = sessions.filter(session => session.NowPlayingItem);
+        const playingSessions = sessions.filter(session => session.NowPlayingItem && session.UserName.toLowerCase() === username.toLowerCase());
 
         if (playingSessions.length <= 0) return client.user.clearActivity();
 
@@ -212,7 +214,7 @@ async function updatePresence(url, token, deviceId) {
           details: playingItem.Name,
           state: playingItem.Album + " - " + playingItem.Artists.join(", "),
           largeImageKey: url + "/Items/" + playingItem.Id + "/Images/Primary",
-          largeImageText: "Playing on " + currentSession.Client,
+          largeImageText: "Playing on " + currentSession.Client + " from " + currentSession.DeviceName,
           smallImageKey: currentSession.PlayState.IsPaused ? "paused" : "playing",
           smallImageText: currentSession.PlayState.IsPaused ? "Paused" : "Playing",
           startTimestamp,
