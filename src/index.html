@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JellyRPC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <style>
+    .media-thumbnail {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-custom {
+      height: 4px;
+    }
+
+    .media-card {
+      max-width: 450px;
+      background-color: rgba(33, 37, 41, 0.8);
+      backdrop-filter: blur(5px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="p-3">
+    <div id="config-menu">
+      <h1 class="mb-2">JellyRPC</h1>
+      <p id="error-message" hidden>There is an error while configuring the app. Please set the credentials again.</p>
+      <form id="config-form">
+        <input class="form-control mb-2" id="server-url" type="text" placeholder="Server URL...">
+        <input class="form-control mb-2" id="username" placeholder="Username..." type="text">
+        <input class="form-control" id="password" placeholder="Password..." type="password">
+        <button class="btn btn-primary mt-2" type="submit" id="config-submit">Save Config</button>
+      </form>
+    </div>
+    <div id="main" hidden>
+      <p>Connected. You can close this window now. To change credentials, please navigate to system tray, right-click on
+        the icon and choose "Reset Credentials".</p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+    crossorigin="anonymous"></script>
+  <script src="./renderer.js"></script>
+</body>
+
+</html>
